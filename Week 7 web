@@ -1,0 +1,126 @@
+Html 5 code
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CSS3 Animations and LocalStorage</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>Interactive CSS3 Animations with LocalStorage</h1>
+
+  <button id="animateBtn">Click Me to Animate</button>
+  <div id="animatedBox" class="box"></div>
+
+  <div>
+    <label for="themeSelect">Choose Theme: </label>
+    <select id="themeSelect">
+      <option value="light">Light</option>
+      <option value="dark">Dark</option>
+    </select>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
+
+
+
+
+style.css code
+/* Basic styling */
+body {
+  font-family: Arial, sans-serif;
+  text-align: center;
+  padding: 20px;
+}
+
+/* Button styles */
+button {
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: 20px;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #4CAF50;
+}
+
+/* Box styling */
+.box {
+  width: 100px;
+  height: 100px;
+  background-color: skyblue;
+  margin-top: 20px;
+  transition: transform 0.5s ease;
+}
+
+/* Dark Theme */
+body.dark {
+  background-color: #333;
+  color: white;
+}
+
+button.dark {
+  background-color: #444;
+  color: white;
+}
+
+.box.dark {
+  background-color: #555;
+}
+
+/* Animation example */
+@keyframes bounce {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-50px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+.animate {
+  animation: bounce 1s ease infinite;
+}
+
+
+script.js code
+// Function to toggle animation on button click
+document.getElementById('animateBtn').addEventListener('click', function() {
+  const animatedBox = document.getElementById('animatedBox');
+  animatedBox.classList.toggle('animate');
+});
+
+// Function to save and apply user theme preference using localStorage
+document.getElementById('themeSelect').addEventListener('change', function(event) {
+  const theme = event.target.value;
+  localStorage.setItem('theme', theme);  // Save the theme choice in localStorage
+  applyTheme(theme);  // Apply the selected theme
+});
+
+// Function to apply theme from localStorage or default to light theme
+function applyTheme(theme) {
+  if (theme === 'dark') {
+    document.body.classList.add('dark');
+    document.querySelector('button').classList.add('dark');
+    document.querySelector('.box').classList.add('dark');
+  } else {
+    document.body.classList.remove('dark');
+    document.querySelector('button').classList.remove('dark');
+    document.querySelector('.box').classList.remove('dark');
+  }
+}
+
+// On page load, retrieve the saved theme and apply it
+window.onload = function() {
+  const savedTheme = localStorage.getItem('theme') || 'light';  // Default to 'light' if no preference
+  applyTheme(savedTheme);
+};
+
